@@ -11,7 +11,7 @@ class WebhookEvent(Base):
     event_type: Mapped[str] = mapped_column(String(100))
     payment_id: Mapped[str] = mapped_column(String(255))
     payload: Mapped[str] = mapped_column(Text)
-    processed: Mapped[bool] = mapped_column(Boolean, default=False, server_default="false", index=True)
+    processed: Mapped[bool] = mapped_column(Boolean, default=False, server_default="false")
     received_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), server_default=func.now())
     processed_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True))
     __table_args__ = (Index("ix_webhook_events_processed", "processed"),)

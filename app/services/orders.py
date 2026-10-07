@@ -28,4 +28,4 @@ class OrderService:
         order=await self.repo.get_by_id_for_user(order_id,user_id,for_update=True)
         if not order: raise NotFoundError("Order not found")
         if order.status!=OrderStatus.PENDING: raise InvalidOrderStateError("Only pending orders can be cancelled")
-        order.status=OrderStatus.CANCELLED; await self.session.commit(); await order_cache.invalidate(user_id,order_id); return order
+        order.status=OrderStatus.CANCELLED; await self.session.commit(); await self.session.refresh(order); await order_cache.invalidate(user_id,order_id); return order

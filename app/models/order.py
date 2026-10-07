@@ -21,7 +21,7 @@ class Order(Base):
     created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), server_default=func.now())
     updated_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), server_default=func.now(), onupdate=func.now())
     user: Mapped["User"] = relationship(back_populates="orders")
-    items: Mapped[list["OrderItem"]] = relationship(back_populates="order", cascade="all, delete-orphan")
+    items: Mapped[list["OrderItem"]] = relationship(back_populates="order", cascade="all, delete-orphan",lazy="selectin")
     payments: Mapped[list["Payment"]] = relationship(back_populates="order", cascade="all, delete-orphan")
     __table_args__ = (Index("ix_orders_user_created", "user_id", "created_at"),)
 

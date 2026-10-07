@@ -49,7 +49,13 @@ async def test_payment_idempotency(client,monkeypatch):
     c,_=client; token=await register_login(c)
     r=await c.post("/api/v1/orders",json={"currency":"USD","items":[{"product_name":"X","quantity":1,"unit_price":"10.00"}]},headers=auth(token)); oid=r.json()["id"]
     monkeypatch.setattr("app.services.payments.idempotency.get",lambda *a:None)
-    monkeypatch.setattr("app.services.payments.idempotency.claim",lambda *a:True)
+    async def fake_claim(*args):
+        return True
+
+    monkeypatch.setattr(
+        "app.services.payments.idempotency.claim",
+        fake_claim,
+    )
     stored={}
     async def store(*args): stored["payment_id"]=args[2]
     monkeypatch.setattr("app.services.payments.idempotency.store",store)
@@ -57,7 +63,6 @@ async def test_payment_idempotency(client,monkeypatch):
     monkeypatch.setattr("app.services.payments.idempotency.get",fake_get)
     r=await c.post(f"/api/v1/orders/{oid}/payments",json={},headers={**auth(token),"Idempotency-Key":"k1"}); assert r.status_code==201
     pid=r.json()["id"]
-    async def get_rec(*args): return {"payment_id":pid,"fingerprint":""} if False else None
     # DB order lock also prevents a second active payment even if Redis loses the record.
     r2=await c.post(f"/api/v1/orders/{oid}/payments",json={},headers=auth(token)); assert r2.status_code==409
 
