@@ -1,4 +1,6 @@
 from pydantic import BaseModel
+
+
 class PaymentWebhookRequest(BaseModel):
     event_id: str
     event_type: str
