@@ -6,6 +6,24 @@ PayFlow is a small event-driven payment and order processing backend built to de
 
 The MVP provides JWT authentication, order management, asynchronous payment processing, Redis-backed idempotency/caching/rate limiting, signed provider webhooks, PostgreSQL persistence, RabbitMQ/Celery messaging, and automated tests.
 
+## My Contribution
+
+Built and developed this project with AI-assisted coding, while taking responsibility for the project requirements, architecture, implementation decisions, debugging, testing, and final review.
+
+Key contributions:
+
+- Defined the backend requirements and overall event-driven architecture.
+- Designed the layered structure using FastAPI routes, services, repositories, and SQLAlchemy.
+- Directed the implementation of authentication, order management, payment processing, and webhook workflows.
+- Reviewed and refined payment idempotency, concurrency handling, state transitions, and transactional behavior.
+- Worked through implementation and integration issues, including async SQLAlchemy behavior, Redis failure handling, and test failures.
+- Designed the Redis usage for idempotency, caching, and rate limiting while keeping PostgreSQL as the source of truth.
+- Reviewed the Celery/RabbitMQ background-processing flow and retry behavior.
+- Validated webhook security using HMAC signatures, timestamp checks, and PostgreSQL-backed event idempotency.
+- Reviewed and improved the automated test suite, including integration and concurrency-related tests.
+- Reviewed the Docker/Docker Compose setup and environment configuration for the complete application stack.
+- Performed the final code review and kept the MVP intentionally small and understandable.
+
 ## Architecture
 
 ```mermaid
